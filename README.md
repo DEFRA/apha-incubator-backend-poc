@@ -1,4 +1,4 @@
-# CDP Node.js Backend Template
+# apha-incubator-backend-poc
 
 Core delivery platform Node.js Backend Template.
 
@@ -36,7 +36,7 @@ easier to use the Node Version Manager [nvm](https://github.com/creationix/nvm)
 To use the correct version of Node.js for this application, via nvm:
 
 ```bash
-cd cdp-node-backend-template
+cd apha-incubator-backend-poc
 nvm use
 ```
 
@@ -192,13 +192,13 @@ return await fetch(url, {
 Build:
 
 ```bash
-docker build --no-cache --tag cdp-node-backend-template .
+docker build --no-cache --tag apha-incubator-backend-poc .
 ```
 
 Run:
 
 ```bash
-docker run -e PORT=3001 -p 3001:3001 cdp-node-backend-template
+docker run -e PORT=3001 -p 3001:3001 apha-incubator-backend-poc
 ```
 
 ### Docker Compose
