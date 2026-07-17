@@ -63,6 +63,7 @@ services:
       - cdp-tenant
     volumes:
       - ./src:/home/node/src
+      - ./tsconfig.json:/home/node/tsconfig.json
       - ./package.json:/home/node/package.json
 
 ################################################################################
