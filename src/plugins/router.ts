@@ -3,6 +3,7 @@ import type { Server } from '@hapi/hapi'
 import { health } from '#/routes/health.js'
 import { example } from '#/routes/example.js'
 
+/** Hapi plugin that registers the application's HTTP routes. */
 export const router = {
   plugin: {
     name: 'router',

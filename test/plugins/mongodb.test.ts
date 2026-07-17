@@ -12,7 +12,9 @@ describe('#mongoDb', () => {
 
       server = await createServer()
       await server.initialize()
-    })
+      // mongo-memory-server cold start can occasionally exceed the default
+      // 10s hook timeout under load, so allow more headroom here.
+    }, 30000)
 
     test('Server should have expected MongoDb decorators', () => {
       expect(server.db).toBeInstanceOf(Db)
@@ -36,7 +38,7 @@ describe('#mongoDb', () => {
 
       server = await createServer()
       await server.initialize()
-    })
+    }, 30000)
 
     test('Should close Mongo client on server stop', async () => {
       const closeSpy = vi.spyOn(server.mongoClient, 'close')

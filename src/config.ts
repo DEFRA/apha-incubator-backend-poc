@@ -10,6 +10,7 @@ convict.addFormats(convictFormatWithValidator)
 const isProduction = process.env.NODE_ENV === 'production'
 const isTest = process.env.NODE_ENV === 'test'
 
+/** Application configuration, loaded and validated from environment variables via convict. */
 export const config = convict<AppConfig>({
   serviceVersion: {
     doc: 'The service version, this variable is injected into your docker container in CDP environments',

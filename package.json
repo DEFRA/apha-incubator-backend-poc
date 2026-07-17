@@ -20,15 +20,18 @@
     "lint": "eslint --cache --cache-strategy content \"**/*.{cjs,js,ts}\"",
     "lint:fix": "npm run lint -- --fix",
     "security-audit": "npm audit --audit-level=critical",
-    "server:debug": "tsx watch --inspect-brk=0.0.0.0 ./src/index.ts",
-    "server:watch": "tsx watch --inspect=0.0.0.0 ./src/index.ts",
+    "server:debug": "tsx watch --conditions=development --inspect-brk=0.0.0.0 ./src/index.ts",
+    "server:watch": "tsx watch --conditions=development --inspect=0.0.0.0 ./src/index.ts",
     "setup:husky": "node -e \"try { (await import('husky')).default() } catch (e) { if (e.code !== 'ERR_MODULE_NOT_FOUND') throw e }\" --input-type module",
     "start": "NODE_ENV=production node ./dist/index.js",
     "test": "TZ=UTC vitest run --coverage",
     "test:watch": "TZ=UTC vitest"
   },
   "imports": {
-    "#/*": "./src/*"
+    "#/*": {
+      "development": "./src/*",
+      "default": "./dist/*"
+    }
   },
   "author": "Defra DDTS",
   "license": "OGL-UK-3.0",

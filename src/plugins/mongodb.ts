@@ -3,6 +3,7 @@ import { LockManager } from 'mongo-locks'
 import type { Server } from '@hapi/hapi'
 import type { MongoConfig } from '#/common/types/index.js'
 
+/** Hapi plugin that connects to MongoDB and decorates the server with `db`, `mongoClient` and `locker`. */
 export const mongoDb = {
   plugin: {
     name: 'mongodb',
