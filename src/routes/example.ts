@@ -1,7 +1,7 @@
 import Boom from '@hapi/boom'
 import Joi from 'joi'
 import type { ServerRoute, Request, ResponseToolkit } from '@hapi/hapi'
-import { findAllExampleData, findExampleData } from '#/services/ExampleFind.js'
+import { findAllExampleData, findExampleData } from '#/services/example-find.js'
 
 /** Validates the `exampleId` path parameter for the single-example route. */
 const exampleParamsSchema = Joi.object({
