@@ -1,15 +1,18 @@
 import hapi from '@hapi/hapi'
+import type { MockInstance } from 'vitest'
+import type * as ServerModule from '#/server.js'
+import type * as StartServerModule from '#/common/helpers/start-server.js'
 
 describe('#startServer', () => {
-  let createServerSpy
-  let hapiServerSpy
-  let startServerImport
-  let createServerImport
+  let createServerSpy: MockInstance<typeof ServerModule.createServer>
+  let hapiServerSpy: MockInstance<typeof hapi.server>
+  let startServerImport: typeof StartServerModule
+  let createServerImport: typeof ServerModule
 
   beforeAll(async () => {
     vi.stubEnv('PORT', '3098')
     createServerImport = await import('#/server.js')
-    startServerImport = await import('./start-server.js')
+    startServerImport = await import('#/common/helpers/start-server.js')
 
     createServerSpy = vi.spyOn(createServerImport, 'createServer')
     hapiServerSpy = vi.spyOn(hapi, 'server')

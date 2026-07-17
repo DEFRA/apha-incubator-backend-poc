@@ -16,10 +16,8 @@ export default defineConfig({
       provider: 'v8',
       reportsDirectory: './coverage',
       reporter: ['text', 'lcov'],
-      // Kept as .js temporarily — source is not yet converted to TypeScript.
-      // Switch to 'src/**/*.ts' once step 06 (full src conversion) completes.
-      include: ['src/**/*.js'],
-      exclude: [...configDefaults.exclude, 'coverage', 'dist']
+      include: ['src/**/*.ts'],
+      exclude: [...configDefaults.exclude, 'coverage', 'dist', 'src/**/*.d.ts']
     },
     setupFiles: ['.vite/mongo-memory-server.js', '.vite/setup-files.js']
   }

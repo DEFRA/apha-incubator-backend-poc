@@ -1,8 +1,9 @@
 import { Db, MongoClient } from 'mongodb'
 import { LockManager } from 'mongo-locks'
+import type { Server } from '@hapi/hapi'
 
 describe('#mongoDb', () => {
-  let server
+  let server: Server
 
   describe('Set up', () => {
     beforeAll(async () => {
