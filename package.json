@@ -52,6 +52,8 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
+    "@types/convict": "6.1.6",
+    "@types/convict-format-with-validator": "6.0.6",
     "@types/hapi__boom": "7.4.1",
     "@types/hapi__hapi": "20.0.13",
     "@types/node": "24.13.3",
