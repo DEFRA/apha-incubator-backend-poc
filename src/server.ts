@@ -1,4 +1,7 @@
 import Hapi, { type Server } from '@hapi/hapi'
+import Inert from '@hapi/inert'
+import Vision from '@hapi/vision'
+import HapiSwagger, { type RegisterOptions } from 'hapi-swagger'
 
 import { secureContext } from '@defra/hapi-secure-context'
 
@@ -10,6 +13,15 @@ import { failAction } from '#/common/helpers/fail-action.js'
 import { pulse } from '#/plugins/pulse.js'
 import { requestTracing } from '#/plugins/request-tracing.js'
 import { metrics } from '@defra/cdp-metrics'
+
+const swaggerOptions: RegisterOptions = {
+  info: {
+    title: 'APHA Incubator Backend POC API',
+    version: config.get('serviceVersion') ?? '0.0.0'
+  },
+  documentationPath: '/documentation',
+  grouping: 'tags'
+}
 
 /**
  * Builds the Hapi server, registers all plugins, and returns it (not yet started).
@@ -49,6 +61,7 @@ export async function createServer(): Promise<Server> {
   // secureContext  - loads CA certificates from environment config
   // pulse          - provides shutdown handlers
   // mongoDb        - sets up mongo connection pool and attaches to `server` and `request` objects
+  // Inert/Vision/HapiSwagger - serve the OpenAPI/Swagger UI at /documentation
   // router         - routes used in the app
   await server.register([
     requestLogger,
@@ -60,6 +73,9 @@ export async function createServer(): Promise<Server> {
       plugin: mongoDb,
       options: config.get('mongo')
     },
+    Inert,
+    Vision,
+    { plugin: HapiSwagger, options: swaggerOptions },
     router
   ])
 

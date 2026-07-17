@@ -41,11 +41,14 @@
     "@elastic/ecs-pino-format": "1.5.0",
     "@hapi/boom": "10.0.1",
     "@hapi/hapi": "21.4.9",
+    "@hapi/inert": "7.1.2",
+    "@hapi/vision": "7.0.3",
     "aws4": "1.13.2",
     "convict": "6.2.5",
     "convict-format-with-validator": "6.2.0",
     "hapi-pino": "13.0.0",
     "hapi-pulse": "3.0.0",
+    "hapi-swagger": "17.3.2",
     "joi": "18.2.1",
     "mongo-locks": "3.1.2",
     "mongodb": "7.1.1",
@@ -70,5 +73,10 @@
     "vitest": "4.1.8",
     "vitest-fetch-mock": "0.4.5",
     "vitest-mongodb": "1.0.3"
+  },
+  "overrides": {
+    "hapi-swagger": {
+      "joi": "$joi"
+    }
   }
 }
