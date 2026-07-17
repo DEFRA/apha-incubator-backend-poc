@@ -1,0 +1,1 @@
+../agent-power-ups/instructions/typescript/AGENTS.md
