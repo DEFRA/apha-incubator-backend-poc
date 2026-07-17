@@ -1,8 +1,15 @@
+import type { Server } from '@hapi/hapi'
+
 import { config } from '#/config.js'
 
 import { createServer } from '#/server.js'
 
-export async function startServer() {
+/**
+ * Creates and starts the Hapi server, logging its startup URL.
+ *
+ * @returns The started server instance.
+ */
+export async function startServer(): Promise<Server> {
   const server = await createServer()
   await server.start()
 

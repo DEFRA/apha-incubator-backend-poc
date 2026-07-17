@@ -1,4 +1,4 @@
-import Hapi from '@hapi/hapi'
+import Hapi, { type Server } from '@hapi/hapi'
 
 import { secureContext } from '@defra/hapi-secure-context'
 
@@ -11,7 +11,12 @@ import { pulse } from '#/plugins/pulse.js'
 import { requestTracing } from '#/plugins/request-tracing.js'
 import { metrics } from '@defra/cdp-metrics'
 
-export async function createServer() {
+/**
+ * Builds the Hapi server, registers all plugins, and returns it (not yet started).
+ *
+ * @returns A configured, unstarted Hapi server instance.
+ */
+export async function createServer(): Promise<Server> {
   const server = Hapi.server({
     host: config.get('host'),
     port: config.get('port'),

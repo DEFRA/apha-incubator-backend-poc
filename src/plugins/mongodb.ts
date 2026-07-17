@@ -1,16 +1,19 @@
-import { MongoClient } from 'mongodb'
+import { MongoClient, type Db, type MongoClientOptions } from 'mongodb'
 import { LockManager } from 'mongo-locks'
+import type { Server } from '@hapi/hapi'
+import type { MongoConfig } from '#/common/types/index.js'
 
 export const mongoDb = {
   plugin: {
     name: 'mongodb',
     version: '1.0.0',
-    register: async function (server, options) {
+    register: async (server: Server, options: MongoConfig): Promise<void> => {
       server.logger.info('Setting up MongoDb')
 
-      const client = await MongoClient.connect(options.mongoUrl, {
-        ...options.mongoOptions
-      })
+      const client = await MongoClient.connect(
+        options.mongoUrl,
+        toMongoClientOptions(options.mongoOptions)
+      )
 
       const databaseName = options.databaseName
       const db = client.db(databaseName)
@@ -38,9 +41,30 @@ export const mongoDb = {
   }
 }
 
-async function createIndexes(db) {
+async function createIndexes(db: Db): Promise<void> {
   await db.collection('mongo-locks').createIndex({ id: 1 })
 
   // Example of how to create a mongodb index. Remove as required
   await db.collection('example-data').createIndex({ id: 1 })
+}
+
+/**
+ * Converts the convict-sourced Mongo options into `MongoClientOptions`,
+ * dropping unset (`null`) fields so they're treated as not provided,
+ * matching the original config's "nullable = not overridden" semantics.
+ */
+function toMongoClientOptions(
+  mongoOptions: MongoConfig['mongoOptions']
+): MongoClientOptions {
+  const options: MongoClientOptions = {}
+
+  if (mongoOptions.retryWrites !== null) {
+    options.retryWrites = mongoOptions.retryWrites
+  }
+
+  if (mongoOptions.readPreference !== null) {
+    options.readPreference = mongoOptions.readPreference
+  }
+
+  return options
 }

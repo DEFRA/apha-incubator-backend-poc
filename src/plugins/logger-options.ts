@@ -9,13 +9,14 @@ const serviceVersion = config.get('serviceVersion')
 const formatters = {
   ecs: {
     ...ecsFormat({
-      serviceVersion,
+      serviceVersion: serviceVersion ?? undefined,
       serviceName
     })
   },
   'pino-pretty': { transport: { target: 'pino-pretty' } }
 }
 
+/** ECS-compliant Pino logger options for the `request-logger` (`hapi-pino`) plugin. */
 export const loggerOptions = {
   enabled: logConfig.isEnabled,
   ignorePaths: ['/health'],
@@ -26,8 +27,8 @@ export const loggerOptions = {
   level: logConfig.level,
   ...formatters[logConfig.format],
   nesting: true,
-  mixin() {
-    const mixinValues = {}
+  mixin(): { trace?: { id: string } } {
+    const mixinValues: { trace?: { id: string } } = {}
     const traceId = getTraceId()
     if (traceId) {
       mixinValues.trace = { id: traceId }
