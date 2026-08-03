@@ -20,35 +20,39 @@ to `dist/`, one verifiable phase at a time.
 ## Ground rules (apply to every step)
 
 ### Execution & build model
+
 - TypeScript is compiled with **`tsc` to `dist/`**. There is an explicit build step.
 - **Production** runs the compiled JavaScript (`node dist`); **development** uses watch mode.
 - `dist/` is a build artifact: git-ignored, never hand-edited.
 
 ### Allowed TypeScript subset (from `AGENTS.md`)
-| Feature | Allowed |
-| --- | --- |
-| `strict: true` | ✅ Required |
-| Type inference | ✅ Always |
-| Parameter & return type annotations | ✅ Always |
-| Interfaces / type aliases | ✅ Always |
-| Union types | ✅ Always |
-| Optional properties (`?`) | ✅ Yes |
-| Utility types (`Partial`, `Pick`, `Omit`) | ✅ When appropriate |
-| JSDoc | ✅ Always (on all exports) |
-| Generics | ✅ Only when a library requires it (e.g. `z.infer`) |
-| Conditional types | ❌ No |
-| Mapped types | ❌ No |
-| Decorators | ❌ Avoid unless a framework requires |
-| Declaration merging | ❌ No (one sanctioned exception: augmenting Hapi types for plugin decorations) |
-| `any` | ❌ Never — use `unknown` and narrow |
+
+| Feature                                   | Allowed                                                                        |
+| ----------------------------------------- | ------------------------------------------------------------------------------ |
+| `strict: true`                            | ✅ Required                                                                    |
+| Type inference                            | ✅ Always                                                                      |
+| Parameter & return type annotations       | ✅ Always                                                                      |
+| Interfaces / type aliases                 | ✅ Always                                                                      |
+| Union types                               | ✅ Always                                                                      |
+| Optional properties (`?`)                 | ✅ Yes                                                                         |
+| Utility types (`Partial`, `Pick`, `Omit`) | ✅ When appropriate                                                            |
+| JSDoc                                     | ✅ Always (on all exports)                                                     |
+| Generics                                  | ✅ Only when a library requires it (e.g. `z.infer`)                            |
+| Conditional types                         | ❌ No                                                                          |
+| Mapped types                              | ❌ No                                                                          |
+| Decorators                                | ❌ Avoid unless a framework requires                                           |
+| Declaration merging                       | ❌ No (one sanctioned exception: augmenting Hapi types for plugin decorations) |
+| `any`                                     | ❌ Never — use `unknown` and narrow                                            |
 
 See [`../typescript-guide.md`](../typescript-guide.md) for explanations and examples of each.
 
 ### Validation boundaries — do not mix
+
 - **Joi** for all Hapi route validation (`validate.payload/params/query/headers`).
 - **Zod** for domain/internal runtime types; derive types with `z.infer`.
 
 ### Modelling & style
+
 - Modelling preference: **Zod schema → `type` alias → `interface`**.
 - Filenames **kebab-case**; types/interfaces **PascalCase**; values **camelCase**.
 - ESM with `moduleResolution: NodeNext` — **import specifiers keep the `.js` extension** even
@@ -56,6 +60,7 @@ See [`../typescript-guide.md`](../typescript-guide.md) for explanations and exam
 - JSDoc on every exported function, interface, and type alias (don't restate types in JSDoc).
 
 ### Cross-cutting concerns (must not regress)
+
 - **Logging:** keep ECS-compliant Pino output. If you touch logging, use the `ecs-logging` skill.
 - **Metrics:** via `@defra/cdp-metrics` only.
 - **Config:** convict remains the config mechanism.

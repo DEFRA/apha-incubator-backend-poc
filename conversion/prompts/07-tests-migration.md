@@ -67,15 +67,16 @@ State your choice in the commit. If A, add:
 For each colocated test, move it under `test/` mirroring the `src` structure, rename to `.ts`, and
 update it:
 
-| From | To |
-| --- | --- |
-| `src/plugins/mongodb.test.js` | `test/plugins/mongodb.test.ts` |
+| From                                                    | To                                                       |
+| ------------------------------------------------------- | -------------------------------------------------------- |
+| `src/plugins/mongodb.test.js`                           | `test/plugins/mongodb.test.ts`                           |
 | `src/common/helpers/convict/validate-mongo-uri.test.js` | `test/common/helpers/convict/validate-mongo-uri.test.ts` |
-| `src/common/helpers/fail-action.test.js` | `test/common/helpers/fail-action.test.ts` |
-| `src/common/helpers/start-server.test.js` | `test/common/helpers/start-server.test.ts` |
-| `src/common/helpers/mongo-lock.test.js` | `test/common/helpers/mongo-lock.test.ts` |
+| `src/common/helpers/fail-action.test.js`                | `test/common/helpers/fail-action.test.ts`                |
+| `src/common/helpers/start-server.test.js`               | `test/common/helpers/start-server.test.ts`               |
+| `src/common/helpers/mongo-lock.test.js`                 | `test/common/helpers/mongo-lock.test.ts`                 |
 
 In each test:
+
 - Import the unit under test via the `#/` alias with a `.js` specifier
   (e.g. `import { failAction } from '#/common/helpers/fail-action.js'`).
 - Add types where they clarify intent (typed fixtures, typed mocks). Do not use `any`; use

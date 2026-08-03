@@ -51,7 +51,7 @@ import Hapi, { type Server } from '@hapi/hapi'
 export async function createServer(): Promise<Server> {
   const server = Hapi.server({
     host: config.get('host'),
-    port: config.get('port'),
+    port: config.get('port')
     // ...unchanged options...
   })
 

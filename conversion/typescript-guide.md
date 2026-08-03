@@ -177,11 +177,11 @@ so the compiler erases it entirely (no runtime `import`). Prefer it for types/in
 
 ## 5. `unknown`, `never`, `void` — and why never `any`
 
-| Type | Meaning | Use it for |
-| --- | --- | --- |
+| Type      | Meaning                                                           | Use it for                                                             |
+| --------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | `unknown` | "some value, type not yet known" — you **must narrow** before use | Values from outside: `catch (e)`, parsed JSON, untyped library returns |
-| `never` | "this never happens / never returns" | Exhaustiveness checks; functions that always throw |
-| `void` | "returns nothing meaningful" | Callback/handler return positions |
+| `never`   | "this never happens / never returns"                              | Exhaustiveness checks; functions that always throw                     |
+| `void`    | "returns nothing meaningful"                                      | Callback/handler return positions                                      |
 
 **`any` is banned** in this project. `any` disables type checking for that value and everything
 it touches — it silently spreads and defeats the purpose of TypeScript. Use `unknown` and narrow.
@@ -358,7 +358,9 @@ abstractions.
 // Library-driven generics you WILL use:
 type ExampleData = z.infer<typeof exampleDataSchema> // Zod
 const coll = db.collection<ExampleData>('example-data') // mongodb driver
-const server = Hapi.server({ /* ... */ }) // hapi's own generic typings
+const server = Hapi.server({
+  /* ... */
+}) // hapi's own generic typings
 ```
 
 ```ts
@@ -418,7 +420,10 @@ JSDoc adds the human explanation.
  * @returns All example records with the internal `_id` projected out.
  */
 export function findAllExampleData(db: Db): Promise<ExampleData[]> {
-  return db.collection<ExampleData>('example-data').find({}, { projection: { _id: 0 } }).toArray()
+  return db
+    .collection<ExampleData>('example-data')
+    .find({}, { projection: { _id: 0 } })
+    .toArray()
 }
 ```
 
@@ -431,10 +436,10 @@ conditions and `@returns` for the meaningful result.
 
 This is a project rule, not a preference — **do not mix them**:
 
-| Boundary | Library | Where |
-| --- | --- | --- |
-| **HTTP route validation** (`validate.payload/params/query/headers`) | **Joi** | Hapi routes only |
-| **Domain / internal runtime types** (DB docs, config, queue msgs, external API) | **Zod** | Everywhere else |
+| Boundary                                                                        | Library | Where            |
+| ------------------------------------------------------------------------------- | ------- | ---------------- |
+| **HTTP route validation** (`validate.payload/params/query/headers`)             | **Joi** | Hapi routes only |
+| **Domain / internal runtime types** (DB docs, config, queue msgs, external API) | **Zod** | Everywhere else  |
 
 Joi is Hapi's native validator — it plugs into the request lifecycle (auto 400s, `failAction`).
 Zod gives ergonomic schemas plus `z.infer` types for your domain models.
@@ -486,13 +491,13 @@ module augmentation of `@hapi/hapi` in a `.d.ts` — introduced in the server/pl
 
 `strict: true` turns on a family of checks. `AGENTS.md` **requires** it. The most impactful:
 
-| Flag (enabled by `strict`) | What it catches |
-| --- | --- |
-| `strictNullChecks` | `null`/`undefined` must be handled explicitly — no accidental "cannot read property of undefined". |
-| `noImplicitAny` | Every value must have a known type; forgotten annotations that would default to `any` become errors. |
-| `strictFunctionTypes` | Callback parameter types are checked more soundly. |
-| `strictPropertyInitialization` | Class fields must be initialised (rarely relevant here — few classes). |
-| `alwaysStrict` | Emits `"use strict"` and parses in strict mode. |
+| Flag (enabled by `strict`)     | What it catches                                                                                      |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `strictNullChecks`             | `null`/`undefined` must be handled explicitly — no accidental "cannot read property of undefined".   |
+| `noImplicitAny`                | Every value must have a known type; forgotten annotations that would default to `any` become errors. |
+| `strictFunctionTypes`          | Callback parameter types are checked more soundly.                                                   |
+| `strictPropertyInitialization` | Class fields must be initialised (rarely relevant here — few classes).                               |
+| `alwaysStrict`                 | Emits `"use strict"` and parses in strict mode.                                                      |
 
 Other useful options the conversion may set: `noUncheckedIndexedAccess` (array/object index
 access yields `T | undefined`), `noImplicitReturns`, and `verbatimModuleSyntax` (enforces
@@ -503,15 +508,15 @@ also where most of TypeScript's value comes from.
 
 ## 16. Common compiler errors and how to fix them
 
-| Error | Typical cause | Fix |
-| --- | --- | --- |
-| `Object is possibly 'null'` / `'undefined'` | Using a value that might be missing (`strictNullChecks`) | Narrow first: `if (!x) return ...` or optional chaining `x?.y`. |
-| `Parameter 'x' implicitly has an 'any' type` | Missing parameter annotation (`noImplicitAny`) | Add an explicit type to the parameter. |
-| `Cannot find module './foo' or its type declarations` | Wrong specifier or missing `@types` | Use the `.js` extension under NodeNext; install the `@types/*` package. |
-| `Property 'db' does not exist on type 'Request'` | Plugin decoration not declared to TS | Augment `@hapi/hapi`'s `Request`/`Server` interface (server step). |
-| `Type 'string \| undefined' is not assignable to type 'string'` | A possibly-absent value used where required | Guard it, provide a default, or make the target optional. |
-| `Type 'unknown' is not assignable...` | Using a `catch` error / parsed value directly | Narrow with `instanceof`/`typeof`, or validate with Zod. |
-| `An import path can only end with a '.ts' extension when 'allowImportingTsExtensions'...` | Imported `./x.ts` instead of `./x.js` | Import the `.js` output path, not the `.ts` source. |
+| Error                                                                                     | Typical cause                                            | Fix                                                                     |
+| ----------------------------------------------------------------------------------------- | -------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `Object is possibly 'null'` / `'undefined'`                                               | Using a value that might be missing (`strictNullChecks`) | Narrow first: `if (!x) return ...` or optional chaining `x?.y`.         |
+| `Parameter 'x' implicitly has an 'any' type`                                              | Missing parameter annotation (`noImplicitAny`)           | Add an explicit type to the parameter.                                  |
+| `Cannot find module './foo' or its type declarations`                                     | Wrong specifier or missing `@types`                      | Use the `.js` extension under NodeNext; install the `@types/*` package. |
+| `Property 'db' does not exist on type 'Request'`                                          | Plugin decoration not declared to TS                     | Augment `@hapi/hapi`'s `Request`/`Server` interface (server step).      |
+| `Type 'string \| undefined' is not assignable to type 'string'`                           | A possibly-absent value used where required              | Guard it, provide a default, or make the target optional.               |
+| `Type 'unknown' is not assignable...`                                                     | Using a `catch` error / parsed value directly            | Narrow with `instanceof`/`typeof`, or validate with Zod.                |
+| `An import path can only end with a '.ts' extension when 'allowImportingTsExtensions'...` | Imported `./x.ts` instead of `./x.js`                    | Import the `.js` output path, not the `.ts` source.                     |
 
 General approach: run `npx tsc --noEmit`, read the **first** error (later ones are often
 cascades), fix it, re-run. Fixing the top error frequently clears several below it.

@@ -86,6 +86,7 @@ export function findExampleData(
 ```
 
 Notes on the Mongo typings:
+
 - `collection<ExampleData>(...)` makes `find`/`findOne` return the domain type.
 - `findOne` returns `T | null` — keep the `| null` in the signature; the route already narrows it.
 - Projecting `_id` out is compatible with typing the collection as `ExampleData` (which has no

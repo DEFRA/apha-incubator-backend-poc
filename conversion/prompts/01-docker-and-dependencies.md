@@ -174,10 +174,10 @@ The app service mounts source for live reload. Add `tsconfig.json` to the mounts
 toolchain sees it; keep the `src` mount.
 
 ```yaml
-    volumes:
-      - ./src:/home/node/src
-      - ./tsconfig.json:/home/node/tsconfig.json
-      - ./package.json:/home/node/package.json
+volumes:
+  - ./src:/home/node/src
+  - ./tsconfig.json:/home/node/tsconfig.json
+  - ./package.json:/home/node/package.json
 ```
 
 No other compose services (mongodb, redis, floci) change.
