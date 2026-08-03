@@ -28,13 +28,13 @@ Routine, low-impact changes do not need an ADR.
 
 Each ADR lives in **its own file** and must contain these sections:
 
-| Section        | Purpose                                                             |
-| -------------- | ------------------------------------------------------------------- |
-| `Title`        | Short, descriptive name of the decision.                            |
-| `Status`       | One of `Proposed`, `Accepted`, `Superseded`, `Deprecated`.          |
-| `Context`      | The forces at play: the problem, constraints, and background.       |
-| `Decision`     | The decision that was made, stated in active voice.                 |
-| `Consequences` | The resulting trade-offs — positive, negative, and neutral.         |
+| Section        | Purpose                                                       |
+| -------------- | ------------------------------------------------------------- |
+| `Title`        | Short, descriptive name of the decision.                      |
+| `Status`       | One of `Proposed`, `Accepted`, `Superseded`, `Deprecated`.    |
+| `Context`      | The forces at play: the problem, constraints, and background. |
+| `Decision`     | The decision that was made, stated in active voice.           |
+| `Consequences` | The resulting trade-offs — positive, negative, and neutral.   |
 
 See [`template.adr.md`](template.adr.md) for a starting point.
 

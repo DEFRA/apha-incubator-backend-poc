@@ -111,10 +111,7 @@ usually suffices.
 
 - [ ] `hapi-swagger`, `@hapi/inert`, `@hapi/vision` (and any needed `@types`) are in `package.json`.
 - [ ] `npm run typecheck`, `npm run lint`, `npm run format:check`, `npm run test` all pass.
-- [ ] `npm run build` succeeds; running the app (`docker compose up` / `node dist`):
-      - `GET /documentation` serves the Swagger UI (HTTP `200`, HTML).
-      - `GET /swagger.json` returns a valid OpenAPI/Swagger JSON document.
-      - The `example` routes appear, showing the `exampleId` param derived from the Joi schema.
+- [ ] `npm run build` succeeds; running the app (`docker compose up` / `node dist`): - `GET /documentation` serves the Swagger UI (HTTP `200`, HTML). - `GET /swagger.json` returns a valid OpenAPI/Swagger JSON document. - The `example` routes appear, showing the `exampleId` param derived from the Joi schema.
 - [ ] Existing endpoints still behave exactly as before (health/example unchanged functionally).
 - [ ] No `any`; docs options typed via `hapi-swagger`'s `RegisterOptions`.
 

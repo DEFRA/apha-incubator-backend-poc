@@ -113,11 +113,7 @@ service file converts to `.ts` in the next step (and may be renamed — see note
 - [ ] The `GET /example/{exampleId}` route validates `params` with **Joi**.
 - [ ] `npm run typecheck`, `npm run lint`, `npm run format:check` all pass.
 - [ ] `npm run test` passes.
-- [ ] Runtime smoke test (via `docker compose up` or `node dist`):
-      - `GET /health` → `200 { "message": "success" }`
-      - `GET /example` → `200` with an array
-      - `GET /example/{unknown-id}` → `404`
-      - An invalid `exampleId` that fails Joi → `400`
+- [ ] Runtime smoke test (via `docker compose up` or `node dist`): - `GET /health` → `200 { "message": "success" }` - `GET /example` → `200` with an array - `GET /example/{unknown-id}` → `404` - An invalid `exampleId` that fails Joi → `400`
 - [ ] No `any`; `request.db` is typed (no cast needed) courtesy of step 04's augmentation.
 
 ## Notes / gotchas

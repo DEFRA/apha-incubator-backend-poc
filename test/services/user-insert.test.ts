@@ -10,7 +10,9 @@ describe('#insertUser', () => {
     const collection = { insertOne } as unknown as Collection
     const db = { collection: () => collection } as unknown as Db
 
-    await expect(insertUser(db, userPayload)).rejects.toThrow('Mongo unavailable')
+    await expect(insertUser(db, userPayload)).rejects.toThrow(
+      'Mongo unavailable'
+    )
   })
 
   test('Should insert the user and return it with its generated id', async () => {

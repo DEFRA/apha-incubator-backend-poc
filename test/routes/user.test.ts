@@ -9,7 +9,9 @@ describe('#user payload validation', () => {
   })
 
   test('Should reject payload missing age', () => {
-    expect(getValidationMessage({ name: 'Alice' })).toContain('"age" is required')
+    expect(getValidationMessage({ name: 'Alice' })).toContain(
+      '"age" is required'
+    )
   })
 
   test('Should reject name shorter than 2 characters', () => {

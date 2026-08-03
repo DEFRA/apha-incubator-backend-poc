@@ -9,19 +9,19 @@ It is an **authoring kit**, not a script. Nothing here changes the service on it
 
 ## What's inside
 
-| File | Purpose |
-| --- | --- |
-| [`typescript-guide.md`](./typescript-guide.md) | A thorough guide to core TypeScript features for Node.js developers new to TS. Read this first. |
-| [`prompts/00-conversion-overview.md`](./prompts/00-conversion-overview.md) | Ground rules, the allowed TS subset, and the definition of done. Read before running any step. |
-| [`prompts/01-docker-and-dependencies.md`](./prompts/01-docker-and-dependencies.md) | Docker, Docker Compose, `tsconfig.json`, TS dependencies, npm scripts. |
-| [`prompts/02-tooling-lint-format-test.md`](./prompts/02-tooling-lint-format-test.md) | ESLint, Prettier, Vitest, and `tsc` type-checking wired for `.ts`. |
-| [`prompts/03-config-and-types-foundation.md`](./prompts/03-config-and-types-foundation.md) | `config.ts`, shared types, first Zod schema, `#/` path alias. |
-| [`prompts/04-server-and-plugins.md`](./prompts/04-server-and-plugins.md) | `server.ts`, `index.ts`, and all Hapi plugins. |
-| [`prompts/05-routes-and-validation.md`](./prompts/05-routes-and-validation.md) | Route modules with **Joi** validation and typed handlers. |
-| [`prompts/06-services-and-domain-models.md`](./prompts/06-services-and-domain-models.md) | Service layer with **Zod** domain schemas (`z.infer`). |
-| [`prompts/07-tests-migration.md`](./prompts/07-tests-migration.md) | Convert tests to `.ts` and align to the `test/` folder. |
-| [`prompts/08-api-documentation.md`](./prompts/08-api-documentation.md) | OpenAPI/Swagger API documentation endpoint. |
-| [`prompts/09-final-verification-and-cleanup.md`](./prompts/09-final-verification-and-cleanup.md) | Full build/lint/test/docker smoke test, cleanup, ADR, PR. |
+| File                                                                                             | Purpose                                                                                         |
+| ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| [`typescript-guide.md`](./typescript-guide.md)                                                   | A thorough guide to core TypeScript features for Node.js developers new to TS. Read this first. |
+| [`prompts/00-conversion-overview.md`](./prompts/00-conversion-overview.md)                       | Ground rules, the allowed TS subset, and the definition of done. Read before running any step.  |
+| [`prompts/01-docker-and-dependencies.md`](./prompts/01-docker-and-dependencies.md)               | Docker, Docker Compose, `tsconfig.json`, TS dependencies, npm scripts.                          |
+| [`prompts/02-tooling-lint-format-test.md`](./prompts/02-tooling-lint-format-test.md)             | ESLint, Prettier, Vitest, and `tsc` type-checking wired for `.ts`.                              |
+| [`prompts/03-config-and-types-foundation.md`](./prompts/03-config-and-types-foundation.md)       | `config.ts`, shared types, first Zod schema, `#/` path alias.                                   |
+| [`prompts/04-server-and-plugins.md`](./prompts/04-server-and-plugins.md)                         | `server.ts`, `index.ts`, and all Hapi plugins.                                                  |
+| [`prompts/05-routes-and-validation.md`](./prompts/05-routes-and-validation.md)                   | Route modules with **Joi** validation and typed handlers.                                       |
+| [`prompts/06-services-and-domain-models.md`](./prompts/06-services-and-domain-models.md)         | Service layer with **Zod** domain schemas (`z.infer`).                                          |
+| [`prompts/07-tests-migration.md`](./prompts/07-tests-migration.md)                               | Convert tests to `.ts` and align to the `test/` folder.                                         |
+| [`prompts/08-api-documentation.md`](./prompts/08-api-documentation.md)                           | OpenAPI/Swagger API documentation endpoint.                                                     |
+| [`prompts/09-final-verification-and-cleanup.md`](./prompts/09-final-verification-and-cleanup.md) | Full build/lint/test/docker smoke test, cleanup, ADR, PR.                                       |
 
 ## How to use this kit
 

@@ -88,6 +88,7 @@ with the production target instead. Adapt to how CDP expects the prod image to r
 Capture the decision to adopt TypeScript (a significant, hard-to-reverse choice). **Use the
 `create-adr` skill** — do not hand-roll the shape. Suggested filename:
 `adr/adopting-typescript.adr.md`, status `Accepted`, covering:
+
 - **Context:** JS-first CDP service; desire for type safety and a documented contract.
 - **Decision:** Convert to TypeScript compiled with `tsc` to `dist/`; restricted TS subset;
   Joi at HTTP boundary, Zod for domain types; native `@types`; hapi-swagger for docs.
