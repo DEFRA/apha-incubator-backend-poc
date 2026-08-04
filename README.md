@@ -60,10 +60,18 @@ npm run git:hooks
 
 ### Development
 
-To run the application in `development` mode run:
+This service is written in TypeScript. Source lives under `src/**/*.ts` and is run directly (no
+build step) via [`tsx`](https://github.com/privatenumber/tsx) in watch mode:
 
 ```bash
 npm run dev
+```
+
+To type-check without emitting output:
+
+```bash
+npm run typecheck        # checks src/**/*.ts
+npm run typecheck:test   # checks test/**/*.ts
 ```
 
 ### Testing
@@ -74,12 +82,21 @@ To test the application run:
 npm run test
 ```
 
+Tests live under `test/**/*.ts` (mirroring the `src/` structure) and are written in TypeScript,
+run with [Vitest](https://vitest.dev/).
+
 ### Production
 
-To mimic the application running in `production` mode locally run:
+Production runs the compiled JavaScript output, not the TypeScript source. Build first:
 
 ```bash
-npm start
+npm run build             # tsc compiles src/**/*.ts -> dist/**/*.js
+```
+
+Then to mimic the application running in `production` mode locally run:
+
+```bash
+npm start                 # runs node ./dist/index.js
 ```
 
 ### Npm scripts
@@ -114,11 +131,18 @@ git config --global core.autocrlf false
 
 ## API endpoints
 
-| Endpoint             | Description                    |
-| :------------------- | :----------------------------- |
-| `GET: /health`       | Health                         |
-| `GET: /example    `  | Example API (remove as needed) |
-| `GET: /example/<id>` | Example API (remove as needed) |
+| Endpoint              | Description                                         |
+| :-------------------- | :-------------------------------------------------- |
+| `GET: /health`        | Health                                              |
+| `GET: /example`       | Example API (remove as needed)                      |
+| `GET: /example/<id>`  | Example API (remove as needed)                      |
+| `GET: /documentation` | Interactive Swagger UI (generated from Joi schemas) |
+| `GET: /swagger.json`  | Raw OpenAPI spec                                    |
+
+Route validation is defined with [Joi](https://joi.dev/) at the HTTP boundary, and
+[hapi-swagger](https://github.com/hapipal/hapi-swagger) generates the API documentation directly
+from those Joi schemas (routes tagged `api` appear in the docs; `/health` is intentionally
+excluded).
 
 ## Development helpers
 
@@ -126,7 +150,7 @@ git config --global core.autocrlf false
 
 If you require a write lock for Mongo you can acquire it via `server.locker` or `request.locker`:
 
-```javascript
+```typescript
 async function doStuff(server) {
   const lock = await server.locker.lock('unique-resource-name')
 
@@ -148,7 +172,7 @@ Keep it small and atomic.
 You may use **using** for the lock resource management.
 Note test coverage reports do not like that syntax.
 
-```javascript
+```typescript
 async function doStuff(server) {
   await using lock = await server.locker.lock('unique-resource-name')
 
@@ -163,7 +187,7 @@ async function doStuff(server) {
 }
 ```
 
-Helper methods are also available in `/src/helpers/mongo-lock.js`.
+Helper methods are also available in `/src/common/helpers/mongo-lock.ts`.
 
 ### Proxy
 
@@ -175,7 +199,7 @@ proxy dispatcher:
 
 To add the dispatcher to your own client:
 
-```javascript
+```typescript
 import { ProxyAgent } from 'undici'
 
 return await fetch(url, {
@@ -189,6 +213,11 @@ return await fetch(url, {
 
 ## Docker
 
+This is a multi-stage `Dockerfile` with `development`, `build` and `production` stages. The
+`build` stage compiles TypeScript (`src/**/*.ts`) with `tsc` into `dist/**/*.js`; the
+`production` stage only contains the compiled `dist/` output plus production dependencies (no
+TypeScript, no `src/`).
+
 Build:
 
 ```bash
@@ -199,6 +228,22 @@ Run:
 
 ```bash
 docker run -e PORT=3001 -p 3001:3001 apha-incubator-backend-poc
+```
+
+### Development image
+
+The `development` target installs all dependencies and runs the TypeScript source directly via
+`tsx watch` (see [`npm run dev`](#development)) - there is no compile step, so changes to `.ts`
+files are picked up immediately.
+
+### Production image
+
+The `production` target runs the compiled output with `node dist` - no TypeScript tooling is
+present in this image. Build and run it directly with:
+
+```bash
+docker build --target production --tag apha-incubator-backend-poc:prod .
+docker run -e PORT=3001 -p 3001:3001 apha-incubator-backend-poc:prod
 ```
 
 ### Docker Compose

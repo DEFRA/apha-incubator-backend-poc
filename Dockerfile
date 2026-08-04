@@ -13,9 +13,18 @@ EXPOSE ${PORT} ${PORT_DEBUG}
 
 COPY --chown=node:node package*.json ./
 RUN npm install
+COPY --chown=node:node tsconfig.json ./
 COPY --chown=node:node ./src ./src
 
 CMD [ "npm", "run", "docker:dev" ]
+
+FROM defradigital/node-development:${PARENT_VERSION} AS build
+ARG PARENT_VERSION
+COPY --chown=node:node package*.json ./
+RUN npm ci
+COPY --chown=node:node tsconfig.json ./
+COPY --chown=node:node ./src ./src
+RUN npm run build
 
 FROM defradigital/node:${PARENT_VERSION} AS production
 ARG PARENT_VERSION
@@ -27,8 +36,8 @@ USER root
 RUN apk add --no-cache curl
 USER node
 
-COPY --from=development /home/node/package*.json ./
-COPY --from=development /home/node/src ./src/
+COPY --from=build /home/node/package*.json ./
+COPY --from=build /home/node/dist ./dist/
 
 RUN npm ci --omit=dev
 
@@ -36,4 +45,4 @@ ARG PORT
 ENV PORT=${PORT}
 EXPOSE ${PORT}
 
-CMD [ "node", "src" ]
+CMD [ "node", "dist" ]
