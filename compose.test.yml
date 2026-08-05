@@ -1,0 +1,19 @@
+services:
+  apha-incubator-backend-poc:
+    build:
+      target: development
+    image: apha-incubator-backend-poc
+    container_name: apha-incubator-backend-poc-test
+    command: npm run test
+    volumes:
+      - ./src/:/home/node/src
+      - ./test/:/home/node/test
+      - ./.vite/:/home/node/.vite
+      - ./package.json:/home/node/package.json
+      - ./vitest.config.js:/home/node/vitest.config.js
+      - ./coverage:/home/node/coverage
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/
+    depends_on:
+      mongodb:
+        condition: service_healthy
