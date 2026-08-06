@@ -2,13 +2,14 @@ import type { Server } from '@hapi/hapi'
 
 import { health } from '#/routes/health.js'
 import { example } from '#/routes/example.js'
+import { holdings } from '#/routes/holdings.js'
 
 /** Hapi plugin that registers the application's HTTP routes. */
 export const router = {
   plugin: {
     name: 'router',
     register: (server: Server): void => {
-      server.route([health].concat(example))
+      server.route([health].concat(example, holdings))
     }
   }
 }
