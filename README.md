@@ -263,6 +263,12 @@ docker compose up --build -d
 Mock AWS resources can be created when Floci starts up by editing the scripts in `./compose/floci/start.d/`.
 MongoDB records can also be created when Mongo starts by editing the scripts in `./compose/mongo/`.
 
+A `holding-events` SNS topic is created automatically by
+[`./compose/floci/start.d/10-setup-resources.sh`](./compose/floci/start.d/10-setup-resources.sh) when Floci
+starts up. Its ARN (`arn:aws:sns:eu-west-2:000000000000:holding-events`) is exposed to the service via the
+`HOLDING_EVENTS_SNS_TOPIC_ARN` environment variable set in `compose.yml`, so it does not need to be
+hardcoded in application code.
+
 ### Dependabot
 
 We have added an example dependabot configuration file to the repository. You can enable it by renaming

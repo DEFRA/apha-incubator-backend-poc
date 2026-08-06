@@ -121,6 +121,14 @@ export const config = convict<AppConfig>({
     default: null,
     env: 'HTTP_PROXY'
   },
+  holdingEvents: {
+    snsTopicArn: {
+      doc: 'ARN of the SNS topic that holding lifecycle events are published to',
+      format: String,
+      default: 'arn:aws:sns:eu-west-2:000000000000:holding-events',
+      env: 'HOLDING_EVENTS_SNS_TOPIC_ARN'
+    }
+  },
   tracing: {
     header: {
       doc: 'CDP tracing header name',

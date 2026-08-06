@@ -5,3 +5,6 @@
 
 # SQS queues
 #aws sqs create-queue --queue-name my-queue
+
+# SNS topics
+aws sns create-topic --name holding-events

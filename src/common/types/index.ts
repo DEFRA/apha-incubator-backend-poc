@@ -27,6 +27,11 @@ export type TracingConfig = {
   header: string
 }
 
+/** Runtime configuration for holding lifecycle event publishing, as read from convict. */
+export type HoldingEventsConfig = {
+  snsTopicArn: string
+}
+
 /** The CDP environment the service is running in. */
 export type CdpEnvironment =
   | 'local'
@@ -49,4 +54,5 @@ export type AppConfig = {
   mongo: MongoConfig
   httpProxy: string | null
   tracing: TracingConfig
+  holdingEvents: HoldingEventsConfig
 }
