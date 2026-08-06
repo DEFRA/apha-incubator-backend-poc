@@ -14,6 +14,9 @@
     "dev": "AWS_EMF_ENVIRONMENT=Local NODE_ENV=development npm run server:watch",
     "dev:debug": "AWS_EMF_ENVIRONMENT=Local NODE_ENV=development npm run server:debug",
     "docker:dev": "npm run dev",
+    "dev:up": "docker compose up --build --attach apha-incubator-backend-poc",
+    "docker:test": "npm run lint && (mkdir -p coverage/.tmp 2>/dev/null || true) && docker compose -p apha-incubator-backend-poc-test down -v && docker compose -f compose.yml -f compose.test.yml -p apha-incubator-backend-poc-test run --build --rm apha-incubator-backend-poc",
+    "docker:test:watch": "docker compose -p apha-incubator-backend-poc-test down -v && docker compose -f compose.yml -f compose.test.yml -f compose.test.watch.yml -p apha-incubator-backend-poc-test run --build --rm apha-incubator-backend-poc",
     "format": "prettier --write \"**/*.{cjs,js,ts,json,md}\"",
     "format:check": "prettier --check \"**/*.{cjs,js,ts,json,md}\"",
     "git:pre-commit-hook": "npm run security-audit && npm run typecheck && npm run format:check && npm run lint && npm test",
@@ -74,8 +77,7 @@
     "tsx": "4.23.0",
     "typescript": "6.0.3",
     "vitest": "4.1.8",
-    "vitest-fetch-mock": "0.4.5",
-    "vitest-mongodb": "1.0.3"
+    "vitest-fetch-mock": "0.4.5"
   },
   "overrides": {
     "hapi-swagger": {

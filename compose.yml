@@ -52,7 +52,7 @@ services:
       floci:
         condition: service_healthy
       mongodb:
-        condition: service_started
+        condition: service_healthy
     env_file:
       - 'compose/aws.env'
     environment:

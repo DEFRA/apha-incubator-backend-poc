@@ -1,19 +1,20 @@
 import { Db, MongoClient } from 'mongodb'
 import { LockManager } from 'mongo-locks'
 import type { Server } from '@hapi/hapi'
+import { createServer } from '#/server.js'
+
+async function createInitializedServer(): Promise<Server> {
+  const server = await createServer()
+  await server.initialize()
+  return server
+}
 
 describe('#mongoDb', () => {
   let server: Server
 
   describe('Set up', () => {
     beforeAll(async () => {
-      // Dynamic import needed due to config being updated by vitest-mongodb
-      const { createServer } = await import('#/server.js')
-
-      server = await createServer()
-      await server.initialize()
-      // mongo-memory-server cold start can occasionally exceed the default
-      // 10s hook timeout under load, so allow more headroom here.
+      server = await createInitializedServer()
     }, 30000)
 
     test('Server should have expected MongoDb decorators', () => {
@@ -33,11 +34,7 @@ describe('#mongoDb', () => {
 
   describe('Shut down', () => {
     beforeAll(async () => {
-      // Dynamic import needed due to config being updated by vitest-mongodb
-      const { createServer } = await import('#/server.js')
-
-      server = await createServer()
-      await server.initialize()
+      server = await createInitializedServer()
     }, 30000)
 
     test('Should close Mongo client on server stop', async () => {
