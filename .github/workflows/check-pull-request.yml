@@ -11,6 +11,8 @@ on:
       - synchronize
       - ready_for_review
 
+  workflow_dispatch:
+
 jobs:
   pr-validator:
     name: Run Pull Request Checks
@@ -18,27 +20,46 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # Full history required for SonarCloud to detect changes
 
-      - name: Test code and Create Test Coverage Reports
+      - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: npm
 
+      - run: npm ci
+
       - name: Security audit
         run: npm run security-audit
 
-      - run: |
-          npm ci
-          npm run format:check
-          npm run lint
-          npm test
+      - name: Format check
+        run: npm run format:check
 
-      - name: Test Docker Image Build
+      - name: Lint
+        run: npm run lint
+
+      - name: Build Docker Image
         run: |
           set +e
-          docker build --no-cache --tag cdp-node-backend-template .
+          docker build --no-cache --tag apha-incubator-backend-poc .
           exit $?
+
+      - name: Run Tests
+        run: |
+          mkdir -p coverage
+          chmod -R a+rw ./coverage
+          docker compose -f compose.yml -f compose.test.yml run --build --rm apha-incubator-backend-poc
+
+      - name: Verify Coverage Generation
+        run: |
+          if [ ! -f "./coverage/lcov.info" ]; then
+            echo "WARNING: Coverage file not found at ./coverage/lcov.info"
+            ls -la ./coverage/ || echo "Coverage directory does not exist"
+          else
+            echo "Coverage file found: $(wc -l < ./coverage/lcov.info) lines"
+          fi
 
 #      - name: SonarCloud Scan
 #        if: github.actor != 'dependabot[bot]'
