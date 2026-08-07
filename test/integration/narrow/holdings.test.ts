@@ -30,30 +30,57 @@ describe('#POST /holdings', () => {
   })
 
   describe('Valid payload', () => {
-    test('Should pass validation and reach the handler for a minimal valid payload', async () => {
-      const { statusCode } = await server.inject({
+    test('Should persist a new holding and return 201 with the persisted representation', async () => {
+      const { statusCode, result } = await server.inject({
         method: 'POST',
         url: '/holdings',
         payload: { cph: '12/345/6789', name: 'Green Acres Farm' }
       })
 
-      // Persistence/response shape land in a later PR of this stack; the
-      // temporary handler returns 501 to prove validation let this through.
-      expect(statusCode).toBe(501)
+      expect(statusCode).toBe(201)
+      expect(result).toEqual({
+        cph: '12/345/6789',
+        name: 'Green Acres Farm'
+      })
     })
 
-    test('Should pass validation and reach the handler when optional metadata is provided', async () => {
-      const { statusCode } = await server.inject({
+    test('Should persist a new holding with optional metadata and return 201', async () => {
+      const { statusCode, result } = await server.inject({
         method: 'POST',
         url: '/holdings',
         payload: {
-          cph: '12/345/6789',
-          name: 'Green Acres Farm',
+          cph: '98/765/4321',
+          name: 'Blue Meadow Farm',
           metadata: { region: 'south-west' }
         }
       })
 
-      expect(statusCode).toBe(501)
+      expect(statusCode).toBe(201)
+      expect(result).toEqual({
+        cph: '98/765/4321',
+        name: 'Blue Meadow Farm',
+        metadata: { region: 'south-west' }
+      })
+    })
+
+    test('Should return 409 when a holding with the same cph already exists', async () => {
+      const payload = { cph: '11/111/1111', name: 'Duplicate Farm' }
+
+      const first = await server.inject({
+        method: 'POST',
+        url: '/holdings',
+        payload
+      })
+      expect(first.statusCode).toBe(201)
+
+      const { statusCode, result } = await server.inject({
+        method: 'POST',
+        url: '/holdings',
+        payload
+      })
+
+      expect(statusCode).toBe(409)
+      expect(result).toMatchObject({ statusCode: 409, error: 'Conflict' })
     })
   })
 })

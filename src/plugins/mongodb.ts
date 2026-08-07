@@ -47,6 +47,8 @@ async function createIndexes(db: Db): Promise<void> {
 
   // Example of how to create a mongodb index. Remove as required
   await db.collection('example-data').createIndex({ id: 1 })
+
+  await db.collection('holdings').createIndex({ cph: 1 }, { unique: true })
 }
 
 /**
